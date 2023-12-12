@@ -7,9 +7,14 @@ import (
 	"github.com/bellacbs/authentication-go/src/configuration/validation"
 	"github.com/bellacbs/authentication-go/src/controller/model/request"
 	"github.com/bellacbs/authentication-go/src/controller/model/response"
+	user_model "github.com/bellacbs/authentication-go/src/model/user"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
+)
+
+var (
+	UserDomainInterface user_model.UserDomainInterface
 )
 
 func CreateUser(c *gin.Context) {
@@ -22,6 +27,18 @@ func CreateUser(c *gin.Context) {
 		restError := validation.ValidateUserError(err)
 
 		c.JSON(restError.Code, restError)
+		return
+	}
+
+	domain := user_model.NewUserDomain(
+		userRequest.Email,
+		userRequest.Password,
+		userRequest.Name,
+	)
+
+	if err := domain.CreateUser(); err != nil {
+		c.JSON(err.Code, err)
+		return
 	}
 
 	response := response.UserResponse{
