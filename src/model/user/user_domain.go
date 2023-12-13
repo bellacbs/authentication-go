@@ -1,6 +1,7 @@
 package user_model
 
 import (
+	"encoding/json"
 	"os"
 	"strconv"
 
@@ -18,31 +19,51 @@ type UserDomainInterface interface {
 	GetPassword() string
 	GetName() string
 
+	SetID(string)
+
+	GetJSONValue() (string, error)
+
 	EncryptPassword() error
 }
 
 func NewUserDomain(email, password, name string) UserDomainInterface {
 	return &userDomain{
-		email, password, name,
+		Email:    email,
+		Password: password,
+		Name:     name,
 	}
 }
 
 type userDomain struct {
-	email    string
-	password string
-	name     string
+	ID       string `json:"id"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	Name     string `json:"name"`
+}
+
+func (ud *userDomain) GetJSONValue() (string, error) {
+	value, err := json.Marshal(ud)
+	if err != nil {
+		logger.Error("Error to get JSON valu from user", err)
+		return "", err
+	}
+	return string(value), nil
+}
+
+func (ud *userDomain) SetID(id string) {
+	ud.ID = id
 }
 
 func (ud *userDomain) GetEmail() string {
-	return ud.email
+	return ud.Email
 }
 
 func (ud *userDomain) GetPassword() string {
-	return ud.password
+	return ud.Password
 }
 
 func (ud *userDomain) GetName() string {
-	return ud.name
+	return ud.Name
 }
 
 func (ud *userDomain) EncryptPassword() error {
@@ -52,12 +73,12 @@ func (ud *userDomain) EncryptPassword() error {
 			zap.String("journey", "getEnv"))
 		return err
 	}
-	bytes, err := bcrypt.GenerateFromPassword([]byte(ud.password), cost)
+	bytes, err := bcrypt.GenerateFromPassword([]byte(ud.Password), cost)
 	if err != nil {
 		logger.Error("Error trying to validate user info", err,
 			zap.String("journey", "encryptPassword"))
 		return err
 	}
-	ud.password = string(bytes)
+	ud.Password = string(bytes)
 	return nil
 }
