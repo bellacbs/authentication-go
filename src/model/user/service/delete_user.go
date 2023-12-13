@@ -1,7 +1,7 @@
-package user_model
+package user_service
 
 import rest_errors "github.com/bellacbs/authentication-go/src/configuration/rest_erros"
 
-func (ud *UserDomain) UpdateUser(userId string) *rest_errors.RestError {
+func (ud *userDomainService) DeleteUser(userId string) *rest_errors.RestError {
 	return nil
 }

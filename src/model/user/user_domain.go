@@ -5,7 +5,6 @@ import (
 	"strconv"
 
 	"github.com/bellacbs/authentication-go/src/configuration/logger"
-	rest_errors "github.com/bellacbs/authentication-go/src/configuration/rest_erros"
 	"go.uber.org/zap"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -14,38 +13,51 @@ var (
 	cost = "COST"
 )
 
+type UserDomainInterface interface {
+	GetEmail() string
+	GetPassword() string
+	GetName() string
+
+	EncryptPassword() error
+}
+
 func NewUserDomain(email, password, name string) UserDomainInterface {
-	return &UserDomain{
+	return &userDomain{
 		email, password, name,
 	}
 }
 
-type UserDomain struct {
-	Email    string
-	Password string
-	Name     string
+type userDomain struct {
+	email    string
+	password string
+	name     string
 }
 
-func (ud *UserDomain) EncryptPassword() error {
+func (ud *userDomain) GetEmail() string {
+	return ud.email
+}
+
+func (ud *userDomain) GetPassword() string {
+	return ud.password
+}
+
+func (ud *userDomain) GetName() string {
+	return ud.name
+}
+
+func (ud *userDomain) EncryptPassword() error {
 	cost, err := strconv.Atoi(os.Getenv(cost))
 	if err != nil {
 		logger.Error("Error trying to validate user info", err,
 			zap.String("journey", "getEnv"))
 		return err
 	}
-	bytes, err := bcrypt.GenerateFromPassword([]byte(ud.Password), cost)
+	bytes, err := bcrypt.GenerateFromPassword([]byte(ud.password), cost)
 	if err != nil {
 		logger.Error("Error trying to validate user info", err,
 			zap.String("journey", "encryptPassword"))
 		return err
 	}
-	ud.Password = string(bytes)
+	ud.password = string(bytes)
 	return nil
-}
-
-type UserDomainInterface interface {
-	CreateUser() *rest_errors.RestError
-	UpdateUser(string) *rest_errors.RestError
-	FindUser(string) (*UserDomain, *rest_errors.RestError)
-	DeleteUser(string) *rest_errors.RestError
 }

@@ -1,4 +1,4 @@
-package userController
+package user_controller
 
 import (
 	"net/http"
@@ -6,10 +6,9 @@ import (
 	"github.com/bellacbs/authentication-go/src/configuration/logger"
 	"github.com/bellacbs/authentication-go/src/configuration/validation"
 	"github.com/bellacbs/authentication-go/src/controller/model/request"
-	"github.com/bellacbs/authentication-go/src/controller/model/response"
 	user_model "github.com/bellacbs/authentication-go/src/model/user"
+	"github.com/bellacbs/authentication-go/src/view"
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"go.uber.org/zap"
 )
 
@@ -17,7 +16,7 @@ var (
 	UserDomainInterface user_model.UserDomainInterface
 )
 
-func CreateUser(c *gin.Context) {
+func (uc *userControllerInterface) CreateUser(c *gin.Context) {
 	logger.Info("Init CreateUser controller", zap.String("journey", "createUser"))
 	var userRequest request.UserRequest
 
@@ -36,16 +35,12 @@ func CreateUser(c *gin.Context) {
 		userRequest.Name,
 	)
 
-	if err := domain.CreateUser(); err != nil {
+	if err := uc.service.CreateUser(domain); err != nil {
 		c.JSON(err.Code, err)
 		return
 	}
 
-	response := response.UserResponse{
-		ID:    uuid.New().String(),
-		Email: userRequest.Email,
-		Name:  userRequest.Name,
-	}
+	response := view.ConvertDomainToResponse(domain)
 
 	logger.Info("User created succefully", zap.String("journey", "createUser"))
 
