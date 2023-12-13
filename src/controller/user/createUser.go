@@ -12,10 +12,6 @@ import (
 	"go.uber.org/zap"
 )
 
-var (
-	UserDomainInterface user_model.UserDomainInterface
-)
-
 func (uc *userControllerInterface) CreateUser(c *gin.Context) {
 	logger.Info("Init CreateUser controller", zap.String("journey", "createUser"))
 	var userRequest request.UserRequest

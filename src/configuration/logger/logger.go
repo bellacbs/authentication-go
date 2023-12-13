@@ -44,6 +44,12 @@ func Error(message string, err error, tags ...zap.Field) {
 	log.Sync()
 }
 
+func FatalError(message string, err error, tags ...zap.Field) {
+	tags = append(tags, zap.NamedError("error", err))
+	log.Fatal(message, tags...)
+	log.Sync()
+}
+
 func getOutputLogs() string {
 	outPut := strings.ToLower(strings.TrimSpace(os.Getenv(LOG_OUTPUT)))
 	if outPut == "" {
