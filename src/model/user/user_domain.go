@@ -30,3 +30,7 @@ func (ud *userDomain) GetPassword() string {
 func (ud *userDomain) GetName() string {
 	return ud.name
 }
+
+func (ud *userDomain) SetName(name string) {
+	ud.name = name
+}

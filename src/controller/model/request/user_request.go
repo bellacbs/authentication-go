@@ -5,3 +5,7 @@ type UserRequest struct {
 	Password string `json:"password" binding:"required,min=6,containsany=!@#?*"`
 	Name     string `json:"name" binding:"required,min=4,max=50"`
 }
+
+type UserUpdateRequest struct {
+	Name string `json:"name" binding:"omitempty,min=4,max=100"`
+}

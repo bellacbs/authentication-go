@@ -7,6 +7,7 @@ type UserDomainInterface interface {
 	GetName() string
 
 	SetID(string)
+	SetName(string)
 
 	EncryptPassword() error
 }
@@ -16,5 +17,11 @@ func NewUserDomain(email, password, name string) UserDomainInterface {
 		email:    email,
 		password: password,
 		name:     name,
+	}
+}
+
+func NewUserUpdateDomain(name string) UserDomainInterface {
+	return &userDomain{
+		name: name,
 	}
 }

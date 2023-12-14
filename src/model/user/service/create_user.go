@@ -8,7 +8,7 @@ import (
 )
 
 func (ud *userDomainService) CreateUser(userDomain user_model.UserDomainInterface) (user_model.UserDomainInterface, *rest_errors.RestError) {
-	logger.Info("Init createUser model", zap.String("journey", "createUser"))
+	logger.Info("Init createUser service", zap.String("journey", "createUser"))
 	errHash := userDomain.EncryptPassword()
 	if errHash != nil {
 		return nil, rest_errors.NewInternalServerError("Error to hash password")
@@ -17,5 +17,9 @@ func (ud *userDomainService) CreateUser(userDomain user_model.UserDomainInterfac
 	if err != nil {
 		return nil, rest_errors.NewInternalServerError("Error to create user on database")
 	}
+	logger.Info(
+		"CreateUser service executed successfully",
+		zap.String("userId", userDomain.GetId()),
+		zap.String("journey", "createUserService"))
 	return userDomainepository, nil
 }
