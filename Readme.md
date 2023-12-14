@@ -27,13 +27,14 @@ The following libraries and languages were used in the project's construction:
 
 * Model, view, controller, repository;</br>
 * createUser;</br>
+* GetUserByID;</br>
+* GetUserByEmail;</br>
+* UpdateUserByUserId;</br>
 
  
 <h2 id="pendente">:construction: In development</h2>
 
 - [x] jwt token;
-- [x] Get  user;
-- [x] Update User;
 - [x] Delete User;
 
 <h2 id="requirements">:leftwards_arrow_with_hook: Prerequisites</h2>
