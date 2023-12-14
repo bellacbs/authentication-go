@@ -7,11 +7,15 @@ import (
 	"go.uber.org/zap"
 )
 
-func (ud *userDomainService) CreateUser(userDomain user_model.UserDomainInterface) *rest_errors.RestError {
+func (ud *userDomainService) CreateUser(userDomain user_model.UserDomainInterface) (user_model.UserDomainInterface, *rest_errors.RestError) {
 	logger.Info("Init createUser model", zap.String("journey", "createUser"))
-	err := userDomain.EncryptPassword()
-	if err != nil {
-		return rest_errors.NewInternalServerError("Error to hash password")
+	errHash := userDomain.EncryptPassword()
+	if errHash != nil {
+		return nil, rest_errors.NewInternalServerError("Error to hash password")
 	}
-	return nil
+	userDomainepository, err := ud.userRepository.CreateUser(userDomain)
+	if err != nil {
+		return nil, rest_errors.NewInternalServerError("Error to create user on database")
+	}
+	return userDomainepository, nil
 }
