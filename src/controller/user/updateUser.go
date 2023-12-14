@@ -2,7 +2,6 @@ package user_controller
 
 import (
 	"net/http"
-	"strings"
 
 	"github.com/bellacbs/authentication-go/src/configuration/logger"
 	rest_errors "github.com/bellacbs/authentication-go/src/configuration/rest_erros"
@@ -20,7 +19,7 @@ func (uc *userControllerInterface) UpdateUser(c *gin.Context) {
 	var userRequest request.UserUpdateRequest
 
 	userId := c.Param("userId")
-	if err := c.ShouldBindJSON(&userRequest); err != nil || strings.TrimSpace(userId) == "" {
+	if err := c.ShouldBindJSON(&userRequest); err != nil {
 		logger.Error("Error trying to validate user info", err,
 			zap.String("journey", "updateUser"))
 		restError := validation.ValidateUserError(err)

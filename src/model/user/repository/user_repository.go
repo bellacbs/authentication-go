@@ -27,4 +27,5 @@ type UserRepository interface {
 	FindUserByID(string) (user_model.UserDomainInterface, *rest_errors.RestError)
 	FindUserByEmail(string) (user_model.UserDomainInterface, *rest_errors.RestError)
 	UpdateUserById(string, user_model.UserDomainInterface) *rest_errors.RestError
+	DeleteUser(string) *rest_errors.RestError
 }
