@@ -13,6 +13,10 @@ func (ud *userDomainService) CreateUser(userDomain user_model.UserDomainInterfac
 	if errHash != nil {
 		return nil, rest_errors.NewInternalServerError("Error to hash password")
 	}
+	user, _ := ud.FindUserByEmail(userDomain.GetEmail())
+	if user != nil {
+		return nil, rest_errors.NewBadRequestError("Email is already registered in another account")
+	}
 	userDomainepository, err := ud.userRepository.CreateUser(userDomain)
 	if err != nil {
 		return nil, rest_errors.NewInternalServerError("Error to create user on database")
