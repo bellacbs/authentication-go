@@ -7,7 +7,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func initDependecies(
+func initDependencies(
 	database *mongo.Database,
 ) user_controller.UserControllerInterface {
 	userRepository := user_repository.NewUserRepository(database)

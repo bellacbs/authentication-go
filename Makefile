@@ -5,4 +5,4 @@ run: build
 	@./bin/authentication-go
 
 dev:
-	@gin run *go
+	@air

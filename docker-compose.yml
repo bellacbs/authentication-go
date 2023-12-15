@@ -2,12 +2,36 @@ version: '3.1'
 
 services:
 
+  go:
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+    volumes:
+      - .:/app
+    ports:
+      - 8080:8080
+    environment:
+      - PORT=:8080
+      - LOG_OUTPUT=
+      - LOG_LEVEL=debug
+      - COST=12
+      - MONGODB_URL=mongodb://root:root@mongo:27017/
+      - MONGODB_AUTH_DB=auth
+      - MONGODB_USER_COLLECTION=users
+      - JWT_SECRET_KEY=<RANDOM_KEY_WITH_MORE_THEN-32-CHARACTERS-0f99e5ac-76bd-11ee-b962-0242ac120002-0f99e5ac-76bd-11ee-b962-0242ac120002-0f99e5ac-76bd-11ee-b962-0242ac120002>
+    depends_on:
+      - mongo
+    networks:
+      - mongo_network
+
   mongo:
     image: mongo
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
+    networks:
+      - mongo_network
 
   mongo-express:
     image: mongo-express
@@ -18,3 +42,9 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: root
       ME_CONFIG_MONGODB_URL: mongodb://root:root@mongo:27017/
+    networks:
+      - mongo_network
+
+networks: 
+  mongo_network:
+    driver: bridge
