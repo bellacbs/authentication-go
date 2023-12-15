@@ -26,16 +26,21 @@ The following libraries and languages were used in the project's construction:
 <h2 id="funciona">:heavy_check_mark: What works</h2>
 
 * Model, view, controller, repository;</br>
-* createUser;</br>
-* GetUserByID;</br>
-* GetUserByEmail;</br>
-* UpdateUserByUserId;</br>
+* Login User;</br>
+* Create User;</br>
+* Get User By ID;</br>
+* Get User By Email;</br>
+* Delete User;</br>
+* Middleware for authentication;</br>
+* Docker for mongoDB;</br>
+
 
  
 <h2 id="pendente">:construction: In development</h2>
 
-- [x] jwt token;
-- [x] Delete User;
+- [x] tests;
+- [x] Docker image for dev;
+- [x] Docker image for deploy;
 
 <h2 id="requirements">:leftwards_arrow_with_hook: Prerequisites</h2>
 
