@@ -7,23 +7,27 @@ import (
 	"go.uber.org/zap"
 )
 
-func (ud *userDomainService) CreateUser(userDomain user_model.UserDomainInterface) (user_model.UserDomainInterface, *rest_errors.RestError) {
+func (ud *userDomainService) CreateUser(userDomain user_model.UserDomainInterface) (user_model.UserDomainInterface, string, *rest_errors.RestError) {
 	logger.Info("Init createUser service", zap.String("journey", "createUser"))
 	errHash := userDomain.EncryptPassword()
 	if errHash != nil {
-		return nil, rest_errors.NewInternalServerError("Error to hash password")
+		return nil, "", rest_errors.NewInternalServerError("Error to hash password")
 	}
 	user, _ := ud.FindUserByEmail(userDomain.GetEmail())
 	if user != nil {
-		return nil, rest_errors.NewBadRequestError("Email is already registered in another account")
+		return nil, "", rest_errors.NewBadRequestError("Email is already registered in another account")
+	}
+	token, err := userDomain.GenerateToken()
+	if err != nil {
+		return nil, "", err
 	}
 	userDomainepository, err := ud.userRepository.CreateUser(userDomain)
 	if err != nil {
-		return nil, rest_errors.NewInternalServerError("Error to create user on database")
+		return nil, "", rest_errors.NewInternalServerError("Error to create user on database")
 	}
 	logger.Info(
 		"CreateUser service executed successfully",
 		zap.String("userId", userDomain.GetId()),
 		zap.String("journey", "createUserService"))
-	return userDomainepository, nil
+	return userDomainepository, token, nil
 }
