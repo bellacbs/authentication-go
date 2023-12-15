@@ -22,6 +22,7 @@ The following libraries and languages were used in the project's construction:
 * Validator
 * Docker Compose whith Mongodb
 * zap package from uber
+* jwt
 
 <h2 id="funciona">:heavy_check_mark: What works</h2>
 
@@ -33,19 +34,20 @@ The following libraries and languages were used in the project's construction:
 * Delete User;</br>
 * Middleware for authentication;</br>
 * Docker for mongoDB;</br>
+* Docker image for dev;</br>
+* jwt authentication;</br>
 
 
  
 <h2 id="pendente">:construction: In development</h2>
 
 - [x] tests;
-- [x] Docker image for dev;
 - [x] Docker image for deploy;
 
 <h2 id="requirements">:leftwards_arrow_with_hook: Prerequisites</h2>
 
 Before you start, you will need to have the following tools installed on your machine:
-[Git](https://git-scm.com), [Go](https://go.dev/doc/install). 
+[Git](https://git-scm.com), [Go](https://go.dev/doc/install), [Docker](https://docs.docker.com/engine/install/). 
 Additionally, it's good to have a code editor to work with, such as [VSCode](https://code.visualstudio.com/)
 
 
@@ -54,20 +56,12 @@ Additionally, it's good to have a code editor to work with, such as [VSCode](htt
 ```bash
 # Clone this repository
 
-#set variables
-PORT
-LOG_OUTPUT
-LOG_LEVEL
-COST
-MONGODB_URL
-MONGODB_AUTH_DB
-MONGODB_USER_COLLECTION
-
 # To start
-$ go run *.go
+$ docker compose up
 
 
-# The server will start on port that you chose - ex: <http://localhost:8080>
+# The server will start on port 8080 - <http://localhost:8080>
+# To see mongoDB database using mongo-express, can use por 8081, username and password = admin - <http://localhost:8081>
 
 ```
 
