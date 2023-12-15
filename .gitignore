@@ -1,3 +1,4 @@
 .env
 /bin
-gin-bin
+/tmp
+.air.conf
