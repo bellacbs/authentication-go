@@ -21,7 +21,7 @@ func main() {
 	if err != nil {
 		logger.FatalError("Error to connect database", err)
 	}
-	userController := initDependecies(dataBase)
+	userController := initDependencies(dataBase)
 	router := gin.Default()
 
 	routes.InitRoutes(&router.RouterGroup, userController)
