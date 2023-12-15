@@ -1,5 +1,7 @@
 package user_model
 
+import rest_errors "github.com/bellacbs/authentication-go/src/configuration/rest_erros"
+
 type UserDomainInterface interface {
 	GetId() string
 	GetEmail() string
@@ -10,6 +12,8 @@ type UserDomainInterface interface {
 	SetName(string)
 
 	EncryptPassword() error
+	CheckPasswordHash(string, string) *rest_errors.RestError
+	GenerateToken() (string, *rest_errors.RestError)
 }
 
 func NewUserDomain(email, password, name string) UserDomainInterface {
@@ -23,5 +27,12 @@ func NewUserDomain(email, password, name string) UserDomainInterface {
 func NewUserUpdateDomain(name string) UserDomainInterface {
 	return &userDomain{
 		name: name,
+	}
+}
+
+func NewUserLoginDomain(email, password string) UserDomainInterface {
+	return &userDomain{
+		email:    email,
+		password: password,
 	}
 }

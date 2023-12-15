@@ -48,7 +48,7 @@ func (ur *userRepository) FindUserByID(id string) (user_model.UserDomainInterfac
 }
 
 func (ur *userRepository) FindUserByEmail(email string) (user_model.UserDomainInterface, *rest_errors.RestError) {
-	logger.Info("Init Find User By Email", zap.String("journey", "findUserByEmail"))
+	logger.Info("Init Find User By Email Repository", zap.String("journey", "findUserByEmailRepository"))
 
 	collection_name := os.Getenv(MONGODB_USER_COLLECTION)
 	collection := ur.databaseConnection.Collection(collection_name)
