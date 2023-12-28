@@ -1,7 +1,7 @@
 package user_model
 
 var (
-	cost = "COST"
+	COST = "COST"
 )
 
 type userDomain struct {

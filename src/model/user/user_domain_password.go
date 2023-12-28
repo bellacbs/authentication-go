@@ -11,7 +11,7 @@ import (
 )
 
 func (ud *userDomain) EncryptPassword() error {
-	cost, err := strconv.Atoi(os.Getenv(cost))
+	cost, err := strconv.Atoi(os.Getenv(COST))
 	if err != nil {
 		logger.Error("Error trying to validate user info", err,
 			zap.String("journey", "getEnv"))

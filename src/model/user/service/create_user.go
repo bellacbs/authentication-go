@@ -9,13 +9,13 @@ import (
 
 func (ud *userDomainService) CreateUser(userDomain user_model.UserDomainInterface) (user_model.UserDomainInterface, string, *rest_errors.RestError) {
 	logger.Info("Init createUser service", zap.String("journey", "createUser"))
-	errHash := userDomain.EncryptPassword()
-	if errHash != nil {
-		return nil, "", rest_errors.NewInternalServerError("Error to hash password")
-	}
 	user, _ := ud.FindUserByEmail(userDomain.GetEmail())
 	if user != nil {
 		return nil, "", rest_errors.NewBadRequestError("Email is already registered in another account")
+	}
+	errHash := userDomain.EncryptPassword()
+	if errHash != nil {
+		return nil, "", rest_errors.NewInternalServerError("Error to hash password")
 	}
 	token, err := userDomain.GenerateToken()
 	if err != nil {
